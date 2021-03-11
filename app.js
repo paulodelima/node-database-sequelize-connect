@@ -23,12 +23,6 @@ async function initialize() {
     const { host, port, user, password, database } = config.database;
 
     try {
-        // Conexão através de url
-        // const connection = await mysql.createConnection(`mysql://${user}:${password}@${host}:${port}/${database}`);
-
-        // OU Conexão com envio de parâmetros
-        // const connection = await mysql.createConnection({ host, port, user, password });
-
         const pool = new Pool({
             user,
             password,
@@ -38,13 +32,10 @@ async function initialize() {
         });
 
     } catch (error) {
-        console.error(`\n${redBold}** ATENÇÃO ** ${resetColor}Erro na conexão MySQL\n\n ${red}`, error, `\n${resetColor}`);
+        console.error(`\n${redBold}** ATENÇÃO ** ${resetColor}Erro na conexão do Banco de Dados\n\n ${red}`, error, `\n${resetColor}`);
         return;
     }
-
     console.info(`${green}\n[√] ${yellow}PostgreSQL conectado${resetColor}`);
-
-    // await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
 
     // Conecta com banco de dados via sequelize
     const sequelize = new Sequelize(`postgres://${user}:${password}@${host}:${port}/${database}`, {
