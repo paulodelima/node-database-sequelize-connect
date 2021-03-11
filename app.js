@@ -1,4 +1,4 @@
-const mysql = require('mysql2/promise');
+const { Pool } = require('pg');
 const { Sequelize } = require('sequelize');
 
 const environment = process.env.ENV || 'development';
@@ -16,7 +16,6 @@ const green = '\033[0;32m';
 const greenBold = '\033[1;32m';
 const yellow = '\033[0;33m';
 
-
 async function initialize() {
     // Informa qual ambiente está conectato
     console.info(`${greenBold}\n[√] ${yellow}Ambiente que aplicação está rodando >> ${green}${environment}${resetColor}`);
@@ -28,18 +27,28 @@ async function initialize() {
         // const connection = await mysql.createConnection(`mysql://${user}:${password}@${host}:${port}/${database}`);
 
         // OU Conexão com envio de parâmetros
-        const connection = await mysql.createConnection({host, port, user, password});
+        // const connection = await mysql.createConnection({ host, port, user, password });
+
+        const pool = new Pool({
+            user,
+            password,
+            host,
+            port,
+            database,
+        });
+
     } catch (error) {
         console.error(`\n${redBold}** ATENÇÃO ** ${resetColor}Erro na conexão MySQL\n\n ${red}`, error, `\n${resetColor}`);
         return;
-    }    
-    console.info(`${green}\n[√] ${yellow}MySQL conectado${resetColor}`);
+    }
 
-    await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
+    console.info(`${green}\n[√] ${yellow}PostgreSQL conectado${resetColor}`);
+
+    // await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
 
     // Conecta com banco de dados via sequelize
-    const sequelize = new Sequelize(database, user, password, {
-        dialect: 'mysql',
+    const sequelize = new Sequelize(`postgres://${user}:${password}@${host}:${port}/${database}`, {
+        dialect: 'postgres',
         logging: false,
     });
 
