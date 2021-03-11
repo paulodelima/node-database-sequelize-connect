@@ -1,11 +1,11 @@
 module.exports = {
     development: {
         database: {
-            host: '164.90.140.153',
-            port: 3306,
-            user: 'remote_user',
-            password: '@Pass123#',
-            database: 'dbteste',
+            host: 'tuffi.db.elephantsql.com',
+            port: 5432,
+            user: 'xsexbbqy',
+            password: 'OHGaru_RIbMIwu6a1Y7SuOJ60MzRkmOI',
+            database: 'xsexbbqy',
         },
     },
     production: {
